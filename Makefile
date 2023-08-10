@@ -16,7 +16,7 @@ help:
 
 # Default rule
 all:
-	nixos-generate -c ./configuration.nix -f vm-nogui -o ./dist
+	nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist
 
 # Boots the iso into a virtual machine
 start: all
