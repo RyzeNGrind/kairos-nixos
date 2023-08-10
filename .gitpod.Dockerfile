@@ -5,7 +5,7 @@ ENV USER=gitpod
 USER gitpod
 RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
   && touch .bash_profile \
-  && curl https://nixos.org/releases/nix/nix-2.3.14/install | bash -s -- --no-daemon
+  && curl https://nixos.org/releases/nix/nix-2.17.0/install | bash -s -- --no-daemon
 
 COPY configuration.nix /tmp
 RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
