@@ -25,4 +25,4 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
 
 # Install qemu
-RUN sudo install-packages qemu qemu-system-x86 linux-image-$(uname -r) libguestfs-tools sshpass netcat
+RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
