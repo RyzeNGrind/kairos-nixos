@@ -16,7 +16,7 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && mkdir -p $HOME/.config/nixpkgs && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
   && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   #Enabled Nix Flakes
-  && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes repl-flake\n' >> $HOME/.config/nix/nix.conf \
+  && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes\n' >> $HOME/.config/nix/nix.conf \
   && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf \
   # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
