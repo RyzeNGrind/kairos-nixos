@@ -3,7 +3,7 @@ FROM gitpod/workspace-nix:latest
 # Install Nix
 ENV USER=gitpod
 USER gitpod
-RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
+RUN sudo sh -c 'chown gitpod /nix' \
   && touch .bash_profile \
   && curl https://nixos.org/releases/nix/nix-2.17.0/install | bash -s -- --no-daemon --no-channel-add
 
