@@ -1,0 +1,55 @@
+name: Run flake checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install nix ❄️
+        uses: cachix/install-nix-action@v18
+
+      - name: Run checks ✅
+        run: nix flake check
+
+      - name: Check Conventional Commits 📝
+        uses: webiny/action-conventional-commits@v1.0.5
+
+  build:
+    strategy:
+      matrix:
+       os:
+         - ubuntu-latest
+         - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install nix ❄️
+        uses: cachix/install-nix-action@v18
+
+      - name: Build 🛠️
+        id: build
+        run: |
+          export SYSTEM=$(nix eval --impure --raw --expr "builtins.currentSystem")
+          echo "system=$SYSTEM" >>$GITHUB_OUTPUT
+          nix build ".#buildJobs.${SYSTEM}.combined" -vL
+          echo "result=$(readlink result)" >>$GITHUB_OUTPUT
+
+      - name: Upload result
+        uses: actions/upload-artifact@v3
+        with:
+          name: result-${{ steps.build.outputs.system }}
+          path: ${{ steps.build.outputs.result }}
