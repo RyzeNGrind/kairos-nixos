@@ -1,5 +1,7 @@
-FROM gitpod/workspace-base:latest
+# Image Tags can be found here https://hub.docker.com/r/gitpod/workspace-base/tags
+FROM gitpod/workspace-base:2023-08-10-20-37-08
 # Pin the Nix Channel
+ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
@@ -16,7 +18,7 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && mkdir -p $HOME/.config/nixpkgs && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
   && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   #Enabled Nix Flakes
-  && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes repl-flake\n' >> $HOME/.config/nix/nix.conf \
+  && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes\n' >> $HOME/.config/nix/nix.conf \
   && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf \
   # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
