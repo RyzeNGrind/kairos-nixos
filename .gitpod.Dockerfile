@@ -1,11 +1,15 @@
 FROM gitpod/workspace-base:latest
+# Pin the Nix Channel
+ENV NIXPKGS_COMMIT_TAG=23.05
+ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
+ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
 
 # Install Nix
 ENV USER=gitpod
 USER gitpod
 RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
   && touch .bash_profile \
-  && curl https://nixos.org/releases/nix/nix-2.17.0/install | bash -s -- --no-daemon
+  && curl https://nixos.org/releases/nix/nix-2.17.0/install | bash -s -- --no-daemon --no-channel-add
 
 COPY gitpod.conf.nix /tmp
 RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
@@ -13,12 +17,12 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   #Enabled Nix Flakes
   && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes repl-flake\n' >> $HOME/.config/nix/nix.conf \
-  && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf
+  && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf \
   # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && cachix use cachix \
   # Install git, drenv
-  && nix-env -iA nixpkgs.git nixpkgs.git-lfs nixpkgs.direnv \
+  && nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA git git-lfs direnv \
   # nixos-generate
   && nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
   && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
