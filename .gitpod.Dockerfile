@@ -13,7 +13,7 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   #Enabled Nix Flakes
   && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes repl-flake\n' >> $HOME/.config/nix/nix.conf \
-  && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf
+  && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf \
   # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && cachix use cachix \
