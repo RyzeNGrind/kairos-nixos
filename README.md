@@ -1,3 +1,5 @@
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/RyzeNGrind/kairos-nixos)
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 # A NixOS template on Gitpod
 
 This is a [nix operating system](https://nixos.org/) template configured for ephemeral nix based development environments on [Gitpod](https://www.gitpod.io/).
@@ -6,7 +8,7 @@ This is a [nix operating system](https://nixos.org/) template configured for eph
 
 Click the button below to start a new development environment:
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/gitpod-io/template-nixos)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/RyzeNGrind/kairos-nixos)
 
 ## Get Started With Your Own Project
 
