@@ -23,7 +23,7 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && cachix use cachix \
   # Install git, drenv
-  && nix-env -I ${NIX_PATH} -iA git git-lfs direnv \
+  && nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA git git-lfs direnv \
   # nixos-generate
   && nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
   && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
