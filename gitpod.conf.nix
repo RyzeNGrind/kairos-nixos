@@ -31,6 +31,10 @@
     tmux
     vim
     python3
+    dockerTools
+    systemd
+    dracut
+    linux
   ];
 
   security.sudo = {
