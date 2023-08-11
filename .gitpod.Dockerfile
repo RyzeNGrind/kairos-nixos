@@ -1,4 +1,4 @@
-FROM gitpod/workspace-base:latest
+FROM gitpod/workspace-nix:latest
 
 # Install Nix
 ENV USER=gitpod
