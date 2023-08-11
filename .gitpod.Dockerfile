@@ -1,5 +1,7 @@
-FROM gitpod/workspace-base:latest
+# Image Tags can be found here https://hub.docker.com/r/gitpod/workspace-base/tags
+FROM gitpod/workspace-base:2023-08-10-20-37-08
 # Pin the Nix Channel
+ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
