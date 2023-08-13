@@ -10,9 +10,6 @@ on:
   push:
     branches:
       - master
-      - 'dev*'
-      - 'staging*'
-      - 'prod*'
   pull_request:
     branches:
       - master

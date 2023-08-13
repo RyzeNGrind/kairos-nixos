@@ -1,0 +1,63 @@
+## TODO
+## Consider https://github.com/marketplace/actions/magic-nix-cache 
+## https://github.com/marketplace/actions/nix-flake-checker
+## https://github.com/marketplace/actions/the-determinate-nix-installer
+## https://github.com/marketplace/actions/deadnix-action
+
+name: Run flake checks
+
+on:
+  push:
+    branches:
+      - 'prod*'
+
+jobs:
+  nix-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code 👁️‍🗨️
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install nix ❄️
+        uses: cachix/install-nix-action@v22
+      
+      - name: Pre-commit checks 🛫
+      run: |
+        nix-shell --run 'pre-commit run --all-files'
+      - name: Run checks ✅
+        run: nix flake check
+
+      #- name: Check Conventional Commits 📝
+      #  uses: webiny/action-conventional-commits@v1.0.5
+
+  nix-build:
+    strategy:
+      matrix:
+       os:
+         - ubuntu-latest
+         - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install nix ❄️
+        uses: cachix/install-nix-action@v22
+
+      - name: Build 🛠️
+        id: build
+        run: |
+          export SYSTEM=$(nix eval --impure --raw --expr "builtins.currentSystem")
+          echo "system=$SYSTEM" >>$GITHUB_OUTPUT
+          nix build ".#buildJobs.${SYSTEM}.combined" -vL
+          echo "result=$(readlink result)" >>$GITHUB_OUTPUT
+
+      - name: Upload result
+        uses: actions/upload-artifact@v3
+        with:
+          name: result-${{ steps.build.outputs.system }}
+          path: ${{ steps.build.outputs.result }}
