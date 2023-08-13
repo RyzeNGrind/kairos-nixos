@@ -34,5 +34,14 @@
 
     with subtest("git is installed"):
         machine.succeed("git --help")
+
+    with subtest(""):
+        machine.succeed("nixops --help")
+    with subtest(""):
+        machine.succeed("")
+    with subtest(""):
+        machine.succeed("")
+    with subtest(""):
+        machine.succeed("")
   '';
 }
