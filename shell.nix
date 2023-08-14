@@ -7,8 +7,9 @@ let
   '';
 in
 pkgs.mkShell {
-  buildInputs = [
-    pkgs.python3  # or any other dependencies you might need for pre-commit
+  buildInputs = with pkgs; [
+    python3  # or any other dependencies you might need for pre-commit
+    pre-commit
     # ... other dependencies ...
   ];
 }
