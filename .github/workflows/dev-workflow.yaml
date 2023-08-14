@@ -30,7 +30,7 @@ jobs:
       
       - name: Pre-commit checks 🐱‍👤🔍✅
         run: |
-          nix-shell --run 'pre-commit run --all-files'
+          nix-shell $GITHUB_WORKSPACE/shell.nix  --run 'pre-commit run --all-files'
 
       - name: Run checks 🐱‍👤❄️✔️
         run: nix flake check
