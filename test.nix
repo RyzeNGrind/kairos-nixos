@@ -35,12 +35,17 @@
     with subtest("git is installed"):
         machine.succeed("git --help")
 
-    with subtest(""):
+    with subtest("nixops is installed"):
         machine.succeed("nixops --help")
-    with subtest(""):
-        machine.succeed("")
-    with subtest(""):
-        machine.succeed("")
+    with subtest("nix-linter is installed"):
+        machine.succeed("nix-linter --help")
+    with subtest("nixpkgs-fmt is installed"):
+        machine.succeed("nixpkgs-fmt --help")
+    with subtest("pre-commit is installed"):
+        machine.succeed("pre-commit --help")
+    with subtest("_1password is installed"):
+        machine.succeed("op --help")
+
     with subtest(""):
         machine.succeed("")
   '';
