@@ -10,6 +10,7 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     python3  # or any other dependencies you might need for pre-commit
     pre-commit
+    nixpkgs-fmt
     # ... other dependencies ...
   ];
 }

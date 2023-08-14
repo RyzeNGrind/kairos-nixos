@@ -35,7 +35,7 @@
     nixops-dns
     nix-linter
     nixpkgs-fmt
-    precommit
+    pre-commit
     _1password
     git-credential-1password
     rustc
