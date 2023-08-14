@@ -6,15 +6,9 @@ let
     echo "Hello, World!"
   '';
 in
-{
-  # This attribute set can be used to define multiple build jobs.
-  # For example, you could have one job for each package in your project.
-  buildJobs = {
-    x86_64-linux = {
-      combined = hello;
-    };
-/*     x86_64-darwin = {
-      combined = hello;
-    }; */
-  };
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.python3  # or any other dependencies you might need for pre-commit
+    # ... other dependencies ...
+  ];
 }

@@ -34,9 +34,11 @@
     nixops_Unstable
     nixops-dns
     nix-linter
+    nixpkgs-fmt
     precommit
     _1password
     git-credential-1password
+    rustc
   ];
 
   security.sudo = {
