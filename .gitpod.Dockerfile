@@ -46,3 +46,4 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
 
 # Install qemu
 RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
+
