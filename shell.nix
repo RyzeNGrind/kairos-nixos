@@ -15,4 +15,3 @@ pkgs.mkShell {
     # ... other dependencies ...
   ];
 }
-

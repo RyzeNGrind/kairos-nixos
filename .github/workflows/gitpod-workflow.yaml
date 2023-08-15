@@ -1,5 +1,5 @@
 ---
-name: Check .gitpod file changes
+name: 'Check .gitpod file changes'
 
 on:
   push:
@@ -9,11 +9,12 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: 'ubuntu-latest'
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: 'Checkout repository'
+      uses: 'actions/checkout@v3'
 
-    - name: Run some command
-      run: /bin/gp validate
+    - name: 'Run some command'
+      run: '/bin/gp validate'
+

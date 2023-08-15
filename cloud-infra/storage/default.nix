@@ -1,6 +1,6 @@
 {
   # This flake initializes Cloud Storage.
-  # It checks if rclone has already mounted Google Drive as a local filesystem and uses Wildland to manage the files. 
+  # It checks if rclone has already mounted Google Drive as a local filesystem and uses Wildland to manage the files.
   # If not, it initializes rclone, mounts Google Drive, and uses Wildland to manage the files.
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05"; # Pin to a stable version for production
@@ -9,8 +9,8 @@
     divnix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, divnix }: 
-    flake-utils.lib.eachDefaultSystem (system: 
+  outputs = { self, nixpkgs, flake-utils, divnix }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
@@ -28,7 +28,7 @@
       in
       {
         # The actual function
-        initCloudStorageFn = { mountPoint, client_id, client_secret, root_folder_id, service_account_file, token }: pkgs.runCommand "init-cloud-storage" {} ''
+        initCloudStorageFn = { mountPoint, client_id, client_secret, root_folder_id, service_account_file, token }: pkgs.runCommand "init-cloud-storage" { } ''
           set -e # Exit on error
           export OP_SESSION_my=$(op signin my.1password.com --output=raw)
           export client_id=$(op get item clientidSecretName | jq -r '.details.fields[] | select(.name == "clientid").value')
