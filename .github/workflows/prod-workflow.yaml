@@ -1,6 +1,5 @@
 ---
 # TODO:
-# Consider:
 # - https://github.com/marketplace/actions/magic-nix-cache
 # - https://github.com/marketplace/actions/nix-flake-checker
 # - https://github.com/marketplace/actions/the-determinate-nix-installer
@@ -36,9 +35,6 @@ jobs:
       - name: 'Run checks 🕸️❄️✔️'
         run: 'nix flake check'
 
-      # - name: 'Check Conventional Commits 📜'
-      #   uses: 'webiny/action-conventional-commits@v1.0.5'
-
   nix-build:
     strategy:
       matrix:
@@ -59,9 +55,9 @@ jobs:
         id: 'build'
         run: |
           export SYSTEM=$(nix eval --impure --raw --expr "builtins.currentSystem")
-          echo "system=$SYSTEM" >> $GITHUB_OUTPUT
+          echo "system=$SYSTEM" >> $GITHUB_ENV
           nix build ".#buildJobs.${SYSTEM}.combined" -vL
-          echo "result=$(readlink result)" >> $GITHUB_OUTPUT
+          echo "result=$(readlink result)" >> $GITHUB_ENV
 
       - name: 'Upload result 🚅📤🎁✅🚀️'
         uses: actions/upload-artifact@v3
