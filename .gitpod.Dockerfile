@@ -1,49 +1,62 @@
 # Image Tags can be found here https://hub.docker.com/r/gitpod/workspace-base/tags
-FROM gitpod/workspace-base:2023-08-10-20-37-08
+FROM gitpod/workspace-nix:2023-08-10-20-37-08
+ENV USER=gitpod
+USER gitpod
+
 # Pin the Nix Channel
 ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
 
-# Install Nix
-ENV USER=gitpod
-USER gitpod
-RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
-  && touch .bash_profile \
-  && curl https://nixos.org/releases/nix/nix-2.17.0/install | bash -s -- --no-daemon --no-channel-add
+RUN sudo sh -c 'chown gitpod /nix' \
+  && touch .bash_profile
 
+# Copy the Nix configuration file and the helper script
 COPY gitpod.conf.nix /tmp
-RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
-  && mkdir -p $HOME/.config/nixpkgs && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
-  && . $HOME/.nix-profile/etc/profile.d/nix.sh \
-  #Enabled Nix Flakes
-  && mkdir -p $HOME/.config/nix/ && printf 'experimental-features = nix-command flakes\n' >> $HOME/.config/nix/nix.conf \
-  && printf 'sandbox = false\n' >> $HOME/.config/nix/nix.conf \
-  # Install cachix
-  && nix-env -iA cachix -f https://cachix.org/api/v1/install \
-  && cachix use cachix \
-  # Install git, drenv
-  && nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+COPY nix_run.sh /home/gitpod/
+
+# Configure Nix
+RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
+  && /home/gitpod/nix_run.sh mkdir -p $HOME/.config/nixpkgs $HOME/.config/nix $HOME/.config/direnv \
+  && echo '{ allowUnfree = true; }' > $HOME/.config/nixpkgs/config.nix \
+  && /home/gitpod/nix_run.sh printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
+    # Install cachix
+  && /home/gitpod/nix_run.sh nix-env -iA cachix -f https://cachix.org/api/v1/install \
+  && /home/gitpod/nix_run.sh cachix use cachix
+# Set Nix to not add any channels
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA nix --option no-channel-add true
+# More stable packages
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
   git-lfs \
   direnv \
-  nixops_Unstable \
-  nixops-dns \
-  nix-linter \
-  nixpkgs-fmt \
-  pre-commit \
-  _1password \
-  git-credential-1password \
-  rustc \
-  # nixos-generate
-  && nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
-  && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
-  # Direnv config
-  && mkdir -p $HOME/.config/direnv \
-  && printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml \
-  && printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
+  #nix-linter \
+  rustc
 
+# Packages that might change more often
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+  nixops_unstable \
+  nixops-dns \
+  nixpkgs-fmt \
+  pre-commit
+
+# Security or sensitive tools
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+  _1password \
+  git-credential-1password
+
+# nixos-generate
+RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i ; \
+    cd /tmp && /home/gitpod/nix_run.sh nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist ; \
+    mkdir -p $HOME/.config/direnv && \
+    mkdir -p $HOME/.bashrc.d
+RUN sudo chown -R gitpod:gitpod $HOME/.config && \
+    sudo chown -R gitpod:gitpod $HOME/.bashrc.d && \   
+# Direnv config
+RUN echo '[whitelist]' > $HOME/.config/direnv/config.toml && \
+    echo 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml && \
+    echo 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
 # Install qemu
 RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
 

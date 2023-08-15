@@ -31,10 +31,10 @@
     tmux
     vim
     python3
-    nixops_Unstable
+    nixops_unstable
     nixops-dns
-    nix-linter
     nixpkgs-fmt
+    #nix-linter
     pre-commit
     _1password
     git-credential-1password
