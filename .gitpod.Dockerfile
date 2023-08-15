@@ -6,21 +6,22 @@ ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
-# Copy the Nix configuration file
+# Copy the Nix configuration file and the helper script
 COPY gitpod.conf.nix /tmp
+COPY nix_run.sh /home/gitpod/
 # Configure Nix
-RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
+RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
   && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   && mkdir -p $HOME/.config/nixpkgs $HOME/.config/nix $HOME/.config/direnv \
   && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
   && printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
     # Install cachix
-  && nix-env -iA cachix -f https://cachix.org/api/v1/install \
-  && cachix use cachix
+  && /home/gitpod/nix_run.sh nix-env -iA cachix -f https://cachix.org/api/v1/install \
+  && /home/gitpod/nix_run.sh cachix use cachix
 # Set Nix to not add any channels
-RUN nix-env -iA nixpkgs.nix --option no-channel-add 
+RUN /home/gitpod/nix_run.sh nix-env -iA nixpkgs.nix --option no-channel-add 
 # More stable packages
-RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
   git-lfs \
   direnv \
@@ -28,20 +29,20 @@ RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   rustc
 
 # Packages that might change more often
-RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   nixops_Unstable \
   nixops-dns \
   nixpkgs-fmt \
   pre-commit
 
 # Security or sensitive tools
-RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   _1password \
   git-credential-1password
 
   # nixos-generate
-RUN nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
-  && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
+RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
+  && (cd /tmp && /home/gitpod/nix_run.sh nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
   # Direnv config
   && printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml \
   && printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
