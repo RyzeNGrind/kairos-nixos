@@ -1,7 +1,5 @@
 FROM gitpod/workspace-nix:2023-08-10-20-37-08
 USER gitpod
-# Remove all channels
-RUN nix-channel --remove nixpkgs
 # Set Nix to not add any channels
 RUN nix-env -iA nixpkgs.nix --option no-channel-add
 # Pin the Nix Channel
@@ -18,22 +16,29 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
     # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
-  && cachix use cachix \
-  # Install git, direnv and other pkgs
-  && nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+  && cachix use cachix 
+# More stable packages
+RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
   git-lfs \
   direnv \
+  nix-linter \
+  rustc
+
+# Packages that might change more often
+RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   nixops_Unstable \
   nixops-dns \
-  nix-linter \
   nixpkgs-fmt \
-  pre-commit \
+  pre-commit
+
+# Security or sensitive tools
+RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   _1password \
-  git-credential-1password \
-  rustc \
+  git-credential-1password
+
   # nixos-generate
-  && nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
+RUN nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
   && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
   # Direnv config
   && printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml \
