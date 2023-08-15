@@ -14,7 +14,7 @@ RUN sudo sh -c 'chown gitpod /nix' \
 
 # Copy the Nix configuration file and the helper script
 COPY gitpod.conf.nix /tmp
-COPY ./nix_run.sh /home/gitpod/
+COPY nix_run.sh /home/gitpod/
 
 # Configure Nix
 RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
