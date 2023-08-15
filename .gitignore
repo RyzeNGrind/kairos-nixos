@@ -1,2 +1,4 @@
 dist
 *.qcow2
+/.history/
+/result*/

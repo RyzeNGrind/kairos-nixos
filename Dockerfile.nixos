@@ -1,0 +1,48 @@
+# Use Nix as a base image
+FROM nixos/nix AS base0
+RUN nix-channel --update
+RUN nix-env -i systemd dracut linux
+
+# Copy your default.nix / shell.nix file into the Docker image
+COPY . /app
+WORKDIR /app
+RUN ls -la /app
+
+# Use nix to install dependencies
+RUN nix-build ./default.nix
+
+FROM fedora:38 AS base1
+# Copy the Kairos framework files. We use master builds here for fedora. See https://quay.io/repository/kairos/framework?tab=tags for a list
+FROM quay.io/kairos/framework:master_fedora
+COPY --from=0 / /
+
+# Set the Kairos arguments in os-release file to identify your Kairos image
+FROM quay.io/kairos/osbuilder-tools:latest AS osbuilder
+RUN mkdir /workspace
+COPY --from=base1 /etc/os-release /workspace/os-release
+# You should change the following values according to your own versioning and other details
+RUN OS_NAME=kairos-core-nix \
+  OS_VERSION=v9.9.9 \
+  OS_ID="kairos" \
+  OS_NAME=kairos-core-nix \
+  BUG_REPORT_URL="https://github.com/RyzeNGrind/kairos-nixos/issues" \
+  HOME_URL="https://github.com/RyzeNGrind/kairos-nixos" \
+  OS_REPO="quay.io/ryzengrind/core-nix" \
+  OS_LABEL="latest" \
+  GITHUB_REPO="RyzeNGrind/kairos-nixos" \
+  VARIANT="core" \
+  FLAVOR="nix" \
+  /update-os-release.sh
+
+FROM base1
+COPY --from=osbuilder /workspace/os-release /etc/os-release
+
+FROM base1
+# Activate Kairos services
+RUN systemctl enable cos-setup-reconcile.timer && \
+    systemctl enable cos-setup-fs.service && \
+    systemctl enable cos-setup-boot.service && \
+    systemctl enable cos-setup-network.service
+
+# Specify the command to run your application
+CMD ["nix-shell", "--run", "--help"]
