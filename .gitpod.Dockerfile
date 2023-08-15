@@ -52,7 +52,7 @@ RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-ge
     mkdir -p $HOME/.config/direnv && \
     mkdir -p $HOME/.bashrc.d
 RUN sudo chown -R gitpod:gitpod $HOME/.config && \
-    sudo chown -R gitpod:gitpod $HOME/.bashrc.d && \   
+    sudo chown -R gitpod:gitpod $HOME/.bashrc.d
 # Direnv config
 RUN echo '[whitelist]' > $HOME/.config/direnv/config.toml && \
     echo 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml && \
