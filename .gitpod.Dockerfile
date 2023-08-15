@@ -1,5 +1,14 @@
 FROM gitpod/workspace-nix:2023-08-10-20-37-08
 USER gitpod
+# Remove all channels
+RUN nix-channel --remove nixpkgs
+# Set Nix to not add any channels
+RUN nix-env -iA nixpkgs.nix --option no-channel-add
+# Pin the Nix Channel
+ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
+ENV NIXPKGS_COMMIT_TAG=23.05
+ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
+ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
 # Copy the Nix configuration file
 COPY gitpod.conf.nix /tmp
 # Configure Nix
