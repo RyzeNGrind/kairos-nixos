@@ -24,7 +24,7 @@ RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
   git-lfs \
   direnv \
-  nix-linter \
+  #nix-linter \
   rustc
 
 # Packages that might change more often
