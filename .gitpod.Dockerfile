@@ -19,7 +19,7 @@ RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh
   && /home/gitpod/nix_run.sh nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && /home/gitpod/nix_run.sh cachix use cachix
 # Set Nix to not add any channels
-RUN /home/gitpod/nix_run.sh nix-env -iA nixpkgs.nix --option no-channel-add 
+RUN /home/gitpod/nix_run.sh nix-env -iA nixpkgs.nixpkgs --option no-channel-add true
 # More stable packages
 RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
