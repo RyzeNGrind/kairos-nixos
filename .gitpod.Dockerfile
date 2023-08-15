@@ -43,6 +43,8 @@ RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
 # nixos-generate
 RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i ; \
     cd /tmp && /home/gitpod/nix_run.sh nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist ; \
+    mkdir -p $HOME/.config/direnv && \
+    mkdir -p $HOME/.bashrc.d && \
 # Direnv config
     printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml ; \
     printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
