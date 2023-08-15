@@ -28,7 +28,7 @@ jobs:
         uses: cachix/install-nix-action@v22
       
       - name: Pre-commit checks 🛫
-      run: |
+        run: |
         nix-shell --run 'pre-commit run --all-files'
       - name: Run checks ✅
         run: nix flake check
