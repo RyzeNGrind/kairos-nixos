@@ -1,3 +1,4 @@
+# Image Tags can be found here https://hub.docker.com/r/gitpod/workspace-base/tags
 FROM gitpod/workspace-nix:2023-08-10-20-37-08
 USER gitpod
 
