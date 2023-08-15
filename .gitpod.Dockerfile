@@ -1,7 +1,6 @@
 FROM gitpod/workspace-nix:2023-08-10-20-37-08
 USER gitpod
-# Set Nix to not add any channels
-RUN nix-env -iA nixpkgs.nix --option no-channel-add
+
 # Pin the Nix Channel
 ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
@@ -16,7 +15,9 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
     # Install cachix
   && nix-env -iA cachix -f https://cachix.org/api/v1/install \
-  && cachix use cachix 
+  && cachix use cachix
+# Set Nix to not add any channels
+RUN nix-env -iA nixpkgs.nix --option no-channel-add 
 # More stable packages
 RUN nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
   git \
