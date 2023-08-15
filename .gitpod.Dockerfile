@@ -30,7 +30,7 @@ RUN echo "Generating en_US.UTF-8 locale" && \
     sudo localedef -i en_US -f UTF-8 en_US.UTF-8
 RUN echo "export LANG=en_US.UTF-8" >> $HOME/.bashrc && \
     echo "export LC_ALL=en_US.UTF-8" >> $HOME/.bashrc
-RUN source $HOME/.bashrc
+RUN bash -c "source $HOME/.bashrc"
 # Set Nix to not add any channels
 RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA nix --option no-channel-add true
 # More stable packages
