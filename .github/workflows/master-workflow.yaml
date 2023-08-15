@@ -55,7 +55,8 @@ jobs:
       - name: 'Build 🛠️'
         id: build
         run: |
-          export SYSTEM=$(nix eval --impure --raw --expr "builtins.currentSystem")
+          export SYSTEM=$(nix eval --impure --raw --expr \
+            "builtins.currentSystem")
           echo "system=$SYSTEM" >>$GITHUB_OUTPUT
           nix build ".#buildJobs.${SYSTEM}.combined" -vL
           echo "result=$(readlink result)" >>$GITHUB_OUTPUT
