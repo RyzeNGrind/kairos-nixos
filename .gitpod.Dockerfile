@@ -18,7 +18,7 @@ COPY nix_run.sh /home/gitpod/
 # Configure Nix
 RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
   && /home/gitpod/nix_run.sh mkdir -p $HOME/.config/nixpkgs $HOME/.config/nix $HOME/.config/direnv \
-  && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
+  && echo '{ allowUnfree = true; }' > $HOME/.config/nixpkgs/config.nix \
   && /home/gitpod/nix_run.sh printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
     # Install cachix
   && /home/gitpod/nix_run.sh nix-env -iA cachix -f https://cachix.org/api/v1/install \
