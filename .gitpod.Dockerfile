@@ -25,11 +25,11 @@ RUN /home/gitpod/nix_run.sh echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh
   && /home/gitpod/nix_run.sh nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && /home/gitpod/nix_run.sh cachix use cachix
 # Install glibcLocales package and set locale settings
-RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA glibcLocales \
-  && echo "Generating en_US.UTF-8 locale" \
-  && localedef -i en_US -f UTF-8 en_US.UTF-8 \
-  && echo "export LANG=en_US.UTF-8" >> $HOME/.bashrc && \
-  && echo "export LC_ALL=en_US.UTF-8" >> $HOME/.bashrc
+RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA glibcLocales
+RUN echo "Generating en_US.UTF-8 locale" && \
+    localedef -i en_US -f UTF-8 en_US.UTF-8
+RUN echo "export LANG=en_US.UTF-8" >> $HOME/.bashrc && \
+    echo "export LC_ALL=en_US.UTF-8" >> $HOME/.bashrc
 RUN source $HOME/.bashrc
 # Set Nix to not add any channels
 RUN /home/gitpod/nix_run.sh nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA nix --option no-channel-add true
