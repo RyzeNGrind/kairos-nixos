@@ -1,5 +1,6 @@
 # Image Tags can be found here https://hub.docker.com/r/gitpod/workspace-base/tags
 FROM gitpod/workspace-nix:2023-08-10-20-37-08
+ENV USER=gitpod
 USER gitpod
 
 # Pin the Nix Channel
@@ -7,6 +8,10 @@ ENV NIXPKGS_MASTER=https://github.com/NixOS/nixpkgs/archive/master.tar.gz
 ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
+
+RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
+  && touch .bash_profile
+
 # Copy the Nix configuration file and the helper script
 COPY gitpod.conf.nix /tmp
 COPY nix_run.sh /home/gitpod/
@@ -45,8 +50,10 @@ RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-ge
     cd /tmp && /home/gitpod/nix_run.sh nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist ; \
     mkdir -p $HOME/.config/direnv && \
     mkdir -p $HOME/.bashrc.d && \
+    chown gitpod:gitpod $HOME/.config/direnv && \
+    chown gitpod:gitpod $HOME/.bashrc.d && \    
 # Direnv config
-    printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml ; \
-    printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
+    sudo printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml ; \
+    sudo printf '%s\n' 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
 # Install qemu
 RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
