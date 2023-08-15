@@ -1,10 +1,10 @@
 repos:
 -   repo: https://github.com/nix-community/nixpkgs-fmt
-    rev: master
+    rev: v1.3.0
     hooks:
     -   id: nixpkgs-fmt
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0  # Use the ref you want to point at
+    rev: v4.4.0  # Use the ref you want to point at
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -13,6 +13,6 @@ repos:
         args: ['--autofix']
 
 -   repo: https://github.com/adrienverge/yamllint
-    rev: v1.26.0  # Use the ref you want to point at
+    rev: v1.32.0  # Use the ref you want to point at
     hooks:
     -   id: yamllint
