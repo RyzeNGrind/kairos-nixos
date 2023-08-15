@@ -34,7 +34,7 @@
     nixops_unstable
     nixops-dns
     #nix-linter
-    precommit
+    pre-commit
     _1password
     git-credential-1password
   ];
