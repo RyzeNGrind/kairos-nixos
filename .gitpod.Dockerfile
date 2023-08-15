@@ -9,7 +9,7 @@ ENV NIXPKGS_COMMIT_TAG=23.05
 ENV NIXPKGS_URL=https://github.com/NixOS/nixpkgs/archive/refs/tags/${NIXPKGS_COMMIT_TAG}.tar.gz
 ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
 
-RUN sudo sh -c 'mkdir -m 0755 /nix && chown gitpod /nix' \
+RUN sudo sh -c 'chown gitpod /nix' \
   && touch .bash_profile
 
 # Copy the Nix configuration file and the helper script

@@ -31,6 +31,12 @@
     tmux
     vim
     python3
+    nixops_unstable
+    nixops-dns
+    #nix-linter
+    precommit
+    _1password
+    git-credential-1password
   ];
 
   security.sudo = {
