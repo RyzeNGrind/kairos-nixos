@@ -31,6 +31,7 @@
     tmux
     vim
     python3
+
     nixops_unstable
     nixops-dns
     nixpkgs-fmt
