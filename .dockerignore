@@ -1,5 +1,5 @@
 # Ignore everything
-#**
+**
 # Don't ignore Dockerfiles
 !Dockerfile*
 # Don't ignore .dockerignore
@@ -11,3 +11,5 @@
 #!directory_to_add/
 # Don't ignore default.nix
 !default.nix
+# Don't ignore nix_run.sh
+!nix_run.sh
