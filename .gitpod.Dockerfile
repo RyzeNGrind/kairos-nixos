@@ -1,4 +1,4 @@
-FROM gitpod/workspace-nix:latest
+FROM gitpod/workspace-nix:2023-08-10-20-37-08
 USER gitpod
 # Copy the Nix configuration file
 COPY gitpod.conf.nix /tmp
