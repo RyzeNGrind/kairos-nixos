@@ -13,4 +13,4 @@
 !default.nix
 # Don't ignore nix_run.sh
 !nix_run.sh
-!.gitpod.conf.nix
+!gitpod.conf.nix
