@@ -54,7 +54,8 @@ RUN /home/gitpod/nix_run.sh nix-env -f https://github.com/nix-community/nixos-ge
 RUN sudo chown -R gitpod:gitpod $HOME/.config && \
     sudo chown -R gitpod:gitpod $HOME/.bashrc.d && \   
 # Direnv config
-    echo '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml ; \
+RUN echo '[whitelist]' > $HOME/.config/direnv/config.toml && \
+    echo 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml && \
     echo 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
 # Install qemu
 RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
