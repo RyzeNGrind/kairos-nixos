@@ -10,6 +10,7 @@ ENV NIX_PATH nixpkgs=${NIXPKGS_URL}
 COPY gitpod.conf.nix /tmp
 # Configure Nix
 RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashrc.d/998-nix \
+  && . $HOME/.nix-profile/etc/profile.d/nix.sh \
   && mkdir -p $HOME/.config/nixpkgs $HOME/.config/nix $HOME/.config/direnv \
   && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
   && printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
