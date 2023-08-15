@@ -4,7 +4,7 @@
 ## https://github.com/marketplace/actions/the-determinate-nix-installer
 ## https://github.com/marketplace/actions/deadnix-action
 
-name: Run flake checks
+name: Run master flake checks
 
 on:
   push:

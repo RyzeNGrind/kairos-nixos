@@ -5,7 +5,7 @@
 # - https://github.com/marketplace/actions/the-determinate-nix-installer
 # - https://github.com/marketplace/actions/deadnix-action
 
-name: Run flake checks
+name: Run prod flake checks and build
 
 on:
   push:
