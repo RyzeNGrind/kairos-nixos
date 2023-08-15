@@ -35,6 +35,14 @@
     systemd
     dracut
     linux
+    nixops_unstable
+    nixops-dns
+    nixpkgs-fmt
+    #nix-linter
+    pre-commit
+    _1password
+    git-credential-1password
+    rustc
   ];
 
   security.sudo = {
@@ -51,12 +59,12 @@
     users = {
       root.password = "root";
       gitpod = {
-          extraGroups = [ "gitpod" "wheel" ];
-          uid = 33333;
-          group = "gitpod";
-          isNormalUser = true;
-          password = "gitpod";
-        };
+        extraGroups = [ "gitpod" "wheel" ];
+        uid = 33333;
+        group = "gitpod";
+        isNormalUser = true;
+        password = "gitpod";
+      };
     };
 
   };
@@ -89,7 +97,7 @@
 
   # Auto cd to $GITPOD_REPO_ROOT inside guest
   environment.extraInit = ''
-      source /workspace/.shellhook
+    source /workspace/.shellhook
   '';
 
   # Mount host /workspace inside guest
@@ -107,3 +115,4 @@
   # system.build.toplevelActivation = "root";
 
 }
+
