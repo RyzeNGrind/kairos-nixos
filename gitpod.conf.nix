@@ -33,6 +33,7 @@
     python3
     nixops_unstable
     nixops-dns
+    nixpkgs-fmt
     #nix-linter
     pre-commit
     _1password
