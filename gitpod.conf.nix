@@ -1,6 +1,6 @@
 { pkgs, ... }: {
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 
   networking.firewall.enable = false;
 
@@ -31,6 +31,14 @@
     tmux
     vim
     python3
+
+    nixops_unstable
+    nixops-dns
+    nixpkgs-fmt
+    #nix-linter
+    pre-commit
+    _1password
+    git-credential-1password
   ];
 
   security.sudo = {
