@@ -59,3 +59,4 @@ RUN echo '[whitelist]' > $HOME/.config/direnv/config.toml && \
     echo 'source <(direnv hook bash)' >> $HOME/.bashrc.d/999-direnv
 # Install qemu
 RUN sudo install-packages qemu qemu-system-x86 libguestfs-tools sshpass netcat
+

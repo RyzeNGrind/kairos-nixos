@@ -1,0 +1,13 @@
+# Ignore everything
+**
+# Don't ignore Dockerfiles
+!Dockerfile*
+# Don't ignore .dockerignore
+!.dockerignore
+# Don't ignore .git directory and .gitignore
+!.git
+!.gitignore
+# Don't ignore directories that needs to be added
+#!directory_to_add/
+# Don't ignore default.nix
+!default.nix
