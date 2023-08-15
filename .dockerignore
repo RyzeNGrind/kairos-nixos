@@ -1,5 +1,5 @@
 # Ignore everything
-**
+#**
 # Don't ignore Dockerfiles
 !Dockerfile*
 # Don't ignore .dockerignore
