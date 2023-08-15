@@ -16,9 +16,24 @@ RUN echo 'source $HOME/.nix-profile/etc/profile.d/nix.sh' >> /home/gitpod/.bashr
   && mkdir -p $HOME/.config/nixpkgs $HOME/.config/nix $HOME/.config/direnv \
   && echo '{ allowUnfree = true; }' >> $HOME/.config/nixpkgs/config.nix \
   && printf 'experimental-features = nix-command flakes \nsandbox = false\n' >> $HOME/.config/nix/nix.conf \
-  # Install cachix, git, direnv, nixos-generate
-  && nix-env -iA cachix -f https://cachix.org/api/v1/install nixpkgs.git nixpkgs.git-lfs nixpkgs.direnv -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz \
+    # Install cachix
+  && nix-env -iA cachix -f https://cachix.org/api/v1/install \
   && cachix use cachix \
+  # Install git, direnv and other pkgs
+  && nix-env -I ${NIX_PATH} -f ${NIXPKGS_URL} -iA \
+  git \
+  git-lfs \
+  direnv \
+  nixops_Unstable \
+  nixops-dns \
+  nix-linter \
+  nixpkgs-fmt \
+  pre-commit \
+  _1password \
+  git-credential-1password \
+  rustc \
+  # nixos-generate
+  && nix-env -f https://github.com/nix-community/nixos-generators/archive/master.tar.gz -i \
   && (cd /tmp && nixos-generate -c ./gitpod.conf.nix -f vm-nogui -o ./dist) \
   # Direnv config
   && printf '%s\n' '[whitelist]' 'prefix = [ "/workspace"] ' >> $HOME/.config/direnv/config.toml \
