@@ -1,42 +1,57 @@
 ---
+# This is a test workflow for the Nix build system. It is triggered on workflow dispatch, pull requests, and pushes to staging branches.
 name: "Test"
 on:
+  # Trigger this workflow manually from the Actions tab
   workflow_dispatch: {}
+  # Trigger this workflow on pull requests
   pull_request: {}
+  # Trigger this workflow when pushing to any branch
   push:
     branches:
       - 'staging*'
 jobs:
   nix-check:
+    # This job runs on the latest version of Ubuntu
     runs-on: ubuntu-latest
     strategy:
+      # Limit the number of parallel jobs
       max-parallel: 4
       matrix:
         include:
           - node: 14
+      # Do not cancel all jobs if any matrix job fails
       fail-fast: false
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
 
       - name: 'Install nix 🧙🏽❄️🔧'
         env:
-          NIXPKGS_COMMIT_TAG: 23.05
-          NIXPKGS_URL: >-
-            https://github.com/NixOS/nixpkgs/archive/refs/tags/
-            ${{ env.NIXPKGS_COMMIT_TAG }}.tar.gz
+          BASE: https://github.com/NixOS/nixpkgs/archive/refs/tags/
+          TAG: 23.05
+          EXT: .tar.gz
+          NIXPKGS_URL: ${{ format('{0}{1}{2}', env.BASE_URL, env.NIXPKGS_COMMIT_TAG, env.EXTENSION) }}
+
+        # Install Nix using the specified Nix package URL
         uses: DeterminateSystems/nix-installer-action@v4
         with:
-          nix-package-url: ${{ env.NIXPKGS_URL }}
+          nix-package-url: ${{ env.BASE }}${{ env.TAG }}${{ env.EXT }}
         continue-on-error: true
 
       - name: 'Use magic nix cache 🧙🏽✨🔮'
         env:
           CACHIX_URL: https://ryzengrind.cachix.org
+        # Use the magic Nix cache for faster builds
         uses: DeterminateSystems/magic-nix-cache-action@v2
         with:
           upstream-cache: ${{ env.CACHIX_URL }}
+      # Build the Nix project
       - run: nix build
+      # Run a command in the Nix shell
       - run: nix-shell --run "echo OK"
       - name: Run checks
+        # Run Nix flake checks and print a message if they fail
         run: nix flake check || echo "Nix flake check failed!"
         continue-on-error: true
+
