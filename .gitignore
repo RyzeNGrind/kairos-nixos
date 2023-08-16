@@ -3,3 +3,5 @@ dist
 /.history/
 /result*/
 !/bin/
+.github/workflows/*
+!.github/workflows/test.yaml
