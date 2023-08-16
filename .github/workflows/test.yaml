@@ -15,7 +15,8 @@ jobs:
       - name: 'Install nix 🧙🏽❄️🔧'
         env:
           NIXPKGS_COMMIT_TAG: 23.05
-          NIXPKGS_URL: https://github.com/NixOS/nixpkgs/archive/refs/tags/${{ env.NIXPKGS_COMMIT_TAG }}.tar.gz
+          NIXPKGS_URL: >-
+            https://github.com/NixOS/nixpkgs/archive/refs/tags/${{ env.NIXPKGS_COMMIT_TAG }}.tar.gz
         uses: DeterminateSystems/nix-installer-action@main
         with:
           nix-package-url: ${{ env.NIXPKGS_URL }}
