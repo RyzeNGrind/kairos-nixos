@@ -24,7 +24,7 @@ jobs:
           NIXPKGS_URL: >-
             https://github.com/NixOS/nixpkgs/archive/refs/tags/
             ${{ env.NIXPKGS_COMMIT_TAG }}.tar.gz
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@v4
         with:
           nix-package-url: ${{ env.NIXPKGS_URL }}
         continue-on-error: true
@@ -32,7 +32,7 @@ jobs:
       - name: 'Use magic nix cache 🧙🏽✨🔮'
         env:
           CACHIX_URL: https://ryzengrind.cachix.org
-        uses: DeterminateSystems/magic-nix-cache-action@main
+        uses: DeterminateSystems/magic-nix-cache-action@v2
         with:
           upstream-cache: ${{ env.CACHIX_URL }}
       - run: nix-build
