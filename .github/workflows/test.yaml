@@ -9,6 +9,13 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        include:
+          - node: 14
+      fail-fast: false
+      failed-attempts: 3
     steps:
       - uses: actions/checkout@v3
 
@@ -21,7 +28,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
         with:
           nix-package-url: ${{ env.NIXPKGS_URL }}
-        retry: 3
+        continue-on-error: true
 
       - name: 'Use magic nix cache 🧙🏽✨🔮'
         env:
