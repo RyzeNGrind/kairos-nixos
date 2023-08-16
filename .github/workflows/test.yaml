@@ -35,7 +35,7 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@v2
         with:
           upstream-cache: ${{ env.CACHIX_URL }}
-      - run: nix-build
+      - run: nix build
       - run: nix-shell --run "echo OK"
       - name: Run checks
         run: nix flake check || echo "Nix flake check failed!"
