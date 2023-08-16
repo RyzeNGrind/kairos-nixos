@@ -2,13 +2,15 @@
   # This flake initializes Cloud Storage.
   # It checks if rclone has already mounted Google Drive as a local filesystem and uses Wildland to manage the files.
   # If not, it initializes rclone, mounts Google Drive, and uses Wildland to manage the files.
+  
+  # Inputs for the flake, including pinned versions of dependencies
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05"; # Pin to a stable version for production
     flake-utils.url = "github:numtide/flake-utils";
     divnix.url = "github:divnix/std";
     divnix.inputs.nixpkgs.follows = "nixpkgs";
   };
-
+  # Main logic for initializing cloud storage
   outputs = { self, nixpkgs, flake-utils, divnix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -27,7 +29,7 @@
         token = if builtins.hasAttr "token" secrets then secrets.token else throw "token is not available in your secrets. Please provide a secrets.nix file or set the 1PASSWORD_ENV environment variable.";
       in
       {
-        # The actual function
+        # Function to initialize cloud storage with user-specified parameters
         initCloudStorageFn = { mountPoint, client_id, client_secret, root_folder_id, service_account_file, token }: pkgs.runCommand "init-cloud-storage" { } ''
           set -e # Exit on error
           export OP_SESSION_my=$(op signin my.1password.com --output=raw)
@@ -70,6 +72,7 @@
               mountPoint = userMountPoint;
               secretsFile = secrets;
             };
+            # Systemd service configuration for initializing cloud storage on system startup
             systemd.services.initCloudStorage = {
               wantedBy = [ "multi-user.target" ];
               after = [ "network.target" ]; # Add dependencies
