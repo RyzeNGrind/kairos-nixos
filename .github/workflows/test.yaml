@@ -15,7 +15,6 @@ jobs:
         include:
           - node: 14
       fail-fast: false
-      failed-attempts: 3
     steps:
       - uses: actions/checkout@v3
 
