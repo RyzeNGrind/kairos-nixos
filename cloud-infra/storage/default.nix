@@ -2,7 +2,7 @@
   # This flake initializes Cloud Storage.
   # It checks if rclone has already mounted Google Drive as a local filesystem and uses Wildland to manage the files.
   # If not, it initializes rclone, mounts Google Drive, and uses Wildland to manage the files.
-  
+
   # Inputs for the flake, including pinned versions of dependencies
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05"; # Pin to a stable version for production
