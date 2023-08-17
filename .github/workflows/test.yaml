@@ -35,8 +35,9 @@ jobs:
 
         # Install Nix using the specified Nix package URL
         uses: DeterminateSystems/nix-installer-action@v4
-        with:
-          nix-package-url: ${{ env.BASE }}${{ env.TAG }}${{ env.EXT }}
+        #with:
+        #  nix-package-url: ${{ env.BASE }}${{ env.TAG }}${{ env.EXT }}
+        #uses: cachix/install-nix-action@v22
         continue-on-error: true
 
       - name: 'Use magic nix cache 🧙🏽✨🔮'
