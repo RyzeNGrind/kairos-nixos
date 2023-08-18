@@ -34,10 +34,10 @@ jobs:
           NIXPKGS_URL: ${{ format('{0}{1}{2}', env.BASE_URL, env.NIXPKGS_COMMIT_TAG, env.EXTENSION) }}
 
         # Install Nix using the specified Nix package URL
-        uses: DeterminateSystems/nix-installer-action@v4
+        #uses: DeterminateSystems/nix-installer-action@v4
         #with:
         #  nix-package-url: ${{ env.BASE }}${{ env.TAG }}${{ env.EXT }}
-        #uses: cachix/install-nix-action@v22
+        uses: cachix/install-nix-action@v22
         continue-on-error: true
 
       - name: 'Use magic nix cache 🧙🏽✨🔮'
