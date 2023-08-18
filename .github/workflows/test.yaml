@@ -49,6 +49,10 @@ jobs:
           upstream-cache: ${{ env.CACHIX_URL }}
       # Build the Nix project
       - run: nix build
+      - name: Fetch nixpkgs
+        run: |
+          git clone https://github.com/NixOS/nixpkgs.git --depth 1 -b nixos-23.05
+          echo "NIX_PATH=nixpkgs=$PWD/nixpkgs" >> $GITHUB_ENV
       # Run a command in the Nix shell
       - run: nix-shell --run "echo OK"
       - name: Run checks
