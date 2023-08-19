@@ -61,6 +61,8 @@ jobs:
         continue-on-error: true
 
       - name: Run pre-commit checks
-        run: NIX_PATH=nixpkgs=$PWD/nixpkgs nix-shell --run 'pre-commit run --all-files'
+        env:
+          NIX_PATH: nixpkgs=$PWD/nixpkgs
+        run: nix-shell --run 'pre-commit run --all-files'
 
 
