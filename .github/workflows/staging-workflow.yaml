@@ -25,6 +25,8 @@ jobs:
         uses: cachix/install-nix-action@v22
 
       - name: 'Pre-commit checks 🛫'
+        env:
+          NIX_PATH: nixpkgs=$PWD/nixpkgs
         run: |
           nix-shell --run 'pre-commit run --all-files'
       - name: 'Run checks ✅'

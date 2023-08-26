@@ -1,5 +1,9 @@
 let
-  pkgs = import <nixpkgs> { };
+  pkgs = import (builtins.fetchGit {
+  url = "https://github.com/NixOS/nixpkgs";
+  ref = "nixos-23.05";
+}) { };
+
 
   hello = pkgs.writeShellScriptBin "hello" ''
     #!/bin/sh
