@@ -2,7 +2,18 @@
   # This flake initializes Cloud Storage.
   # It checks if rclone has already mounted Google Drive as a local filesystem and uses Wildland to manage the files.
   # If not, it initializes rclone, mounts Google Drive, and uses Wildland to manage the files.
-
+  imports = [
+    ./cloud-infra/default.nix
+    # Add other cloud app integrations here
+  ];
+    # Toggle for enabling/disabling cloud storage
+  options = {
+    services.cloudInfra.storage.enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable or disable storage in cloud-infra";
+    };
+  };
   # Inputs for the flake, including pinned versions of dependencies
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05"; # Pin to a stable version for production
@@ -65,7 +76,7 @@
               };
             };
           };
-          config = {
+          config = mkIf config.services.cloudInfra.storage.enable {
             # Initialize cloud storage with user-specified mount point
             services.initCloudStorage = {
               enable = true;

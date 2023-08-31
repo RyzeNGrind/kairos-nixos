@@ -1,6 +1,10 @@
 {
-  description = "A simple flake for a NixOS system";
-
+  description = "A not so simple flake for enabling a NixOS cloud lab at home";
+  imports = [
+    ./cloud-infra/default.nix
+    ./cloud-apps/default.nix
+    # Add other cloud app integrations here
+  ];
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
