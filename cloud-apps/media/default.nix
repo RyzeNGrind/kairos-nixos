@@ -2,6 +2,7 @@
 {
   imports = [
     ./cloud-apps/default.nix
+    ./cloud-infra/storage/default.nix  # Add this line to import the cloud storage module
     # Add other cloud app integrations here
   ];
   # Toggle for enabling/disabling media cloud apps
