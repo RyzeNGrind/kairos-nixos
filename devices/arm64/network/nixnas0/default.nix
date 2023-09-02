@@ -91,7 +91,7 @@ options = [ "noatime" "nodiratime" "journal_data_writeback" "barrier=0" "data=wr
 };
 boot.initrd.mdadmConf = ''
       DEVICE /dev/sd*[a-z]
-      ARRAY /dev/md0 level=raid5 num-devices=4 UUID=<insert UUID here>
+      ARRAY /dev/md0 level=raid5 num-devices=4 UUID=3b2e6c4a-ada7-4d3d-8f7b-238be0d42027
     '';
 boot.initrd.luks.devices = [
 {
