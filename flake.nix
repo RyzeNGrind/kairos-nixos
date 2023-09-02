@@ -1,10 +1,6 @@
 {
   description = "A not so simple flake for enabling a NixOS cloud lab at home";
-  imports = [
-    ./cloud-infra/default.nix
-    ./cloud-apps/default.nix
-    # Add other cloud app integrations here
-  ];
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -26,6 +22,12 @@
         };
       };
 
+      nixosModules = {
+        cloud-infra = import ./cloud-infra/default.nix;
+        cloud-apps = import ./cloud-apps/default.nix;
+        # Add other cloud app integrations here
+      };
+
       nixosModule = { pkgs, ... }: {
         imports = [ devos.nixosModules.system ];
         networking.hostName = "my-nixos";
@@ -36,6 +38,18 @@
 
       devShell.${system} = devshell.shell {
         packages = with pkgs; [ hello ];
+      };
+
+      nixosConfigurations = {
+        nixnas0 = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            ({ pkgs, ... }: {
+              system.stateVersion = "21.05";
+            })
+            ./devices/arm64/network/nixnas0/default.nix
+          ];
+        };
       };
     };
 }

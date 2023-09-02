@@ -43,6 +43,7 @@
     _1password
     git-credential-1password
     rustc
+    nixFlakes
   ];
 
   security.sudo = {

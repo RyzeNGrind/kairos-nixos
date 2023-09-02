@@ -3,8 +3,8 @@ image:
   file: .gitpod.Dockerfile
 tasks:
   - name: NixOS Shell
-    command: |
-      make start
+      command: |
+      nix run .#nixosConfigurations.gitpod.config.system.build.toplevel
 
 ports:
   - port: 2222
