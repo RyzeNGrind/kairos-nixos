@@ -9,7 +9,7 @@ WORKDIR /app
 RUN ls -la /app
 
 # Use nix to install dependencies
-RUN nix-build ./default.nix
+RUN nix-build ./shell.nix
 
 FROM fedora:38 AS base1
 # Copy the Kairos framework files. We use master builds here for fedora. See https://quay.io/repository/kairos/framework?tab=tags for a list
