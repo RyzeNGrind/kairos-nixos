@@ -45,7 +45,7 @@
           system = "aarch64-linux";
           modules = [
             ({ pkgs, ... }: {
-              system.stateVersion = "21.05";
+              system.stateVersion = "23.05";
             })
             ./devices/arm64/network/nixnas0/default.nix
           ];
