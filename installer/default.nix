@@ -24,7 +24,7 @@
               ({ config, pkgs, ... }: {
                 imports = [
                   # Add other imports as needed
-                  ./installer/cloudflared/config.nix
+                  ./installer/tunnels/config.nix
                 ];
                 # Configure SSH settings
                 services.openssh.enable = true;

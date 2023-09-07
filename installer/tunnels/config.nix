@@ -1,7 +1,18 @@
 { config, pkgs, ... }:
 {
+  # Enable and configure Tailscale
+  services.tailscale = {
+    enable = true;
+    #advertiseRoutes = [ "10.0.0.0/24" "10.0.1.0/24" ];
+  };
+
+  # Enable and configure ZeroTier
+  services.zerotierone = {
+    enable = true;
+    #joinNetworks = [ "your-network-id" ];
+  };
+
   # Add your cloudflared configuration here
-  # Example:
   services.cloudflared = {
     enable = true;
     config = ''
