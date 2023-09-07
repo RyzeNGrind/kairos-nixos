@@ -5,7 +5,8 @@ tasks:
   - name: NixOS Shell
       command: |
       nix run .#nixosConfigurations.gitpod.config.system.build.toplevel
-
+env:
+  OP_SERVICE_ACCOUNT_TOKEN: $OP_SERVICE_ACCOUNT_TOKEN
 ports:
   - port: 2222
     onOpen: ignore

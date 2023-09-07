@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Load 1Password secrets
-export OP_SESSION_my="$(op signin my.1password.com --output=raw)"
+#export OP_SESSION_my="$(op signin my.1password.com --output=raw)"
+if ! op signin my.1password.com --output=raw; then
+  echo "Failed to sign in to 1Password."
+  exit 1
+fi
 
  # Check if the tunnel exists in 1Password
  tunnel_name=$(op get item 'Cloudflared Tunnel' | jq -r '.details.sections[] | select(.title=="tunnel") | .fields[] | select(.t=="name") | .v')
