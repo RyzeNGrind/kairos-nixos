@@ -15,12 +15,17 @@
   # Add your cloudflared configuration here
   services.cloudflared = {
     enable = true;
-    config = ''
-      tunnel: ${pkgs._1password.op read <vault> <item> <section> <field>}
-      credentials-file: ${pkgs._1password.op read <vault> <item> <section> <field>}
+    config = let
+      cloudflaredInstalled = pkgs ? cloudflared;
+      token = if cloudflaredInstalled then pkgs._1password.op read k8s-lab live-nixos-tunnel config token else "";
+    in
+    ''
+      ${if cloudflaredInstalled then "sudo cloudflared service install " + token else ""}
+      tunnel: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config tunnel}
+      credentials-file: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
       ingress:
-        - hostname: ${pkgs._1password.op read <vault> <item> <section> <field>}
-          service: ${pkgs._1password.op read <vault> <item> <section> <field>}
+        - hostname: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
+          service: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
     '';
   };
 }

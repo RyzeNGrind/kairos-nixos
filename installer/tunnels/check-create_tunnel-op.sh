@@ -17,7 +17,7 @@ export OP_SESSION_my="$(op signin my.1password.com --output=raw)"
 # If the tunnel doesn't exist, create a new one with an iterated pattern
 if [ -z "$tunnel_name" ]; then
   # Generate a new tunnel name with an iterated pattern
-  new_tunnel_name="live-nix-iso-$(date +%s)"  # This uses the current timestamp for iteration
+  new_tunnel_name="live-nix-iso_$(date +%s)"  # This uses the current timestamp for iteration
 
   # Store the new tunnel name in 1Password with a tag
   op create item Login title='Cloudflared Tunnel' username="$new_tunnel_name" password='dummy' url='https://cloudflared.com' --tags="tname:$new_tunnel_name,cloudflare,opsec,hw-infra,network:vlan5,env:dev"
