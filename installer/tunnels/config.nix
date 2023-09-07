@@ -22,10 +22,11 @@
     ''
       ${if cloudflaredInstalled then "sudo cloudflared service install " + token else ""}
       tunnel: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config tunnel}
-      credentials-file: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
+      credentials-file: ${pkgs._1password.op document get "${pkgs._1password.op read k8s-lab live-nixos-tunnel config tunnel}.json" --out-file installer/tunnels/credentials-file}
+
       ingress:
-        - hostname: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
-          service: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config <field>}
+        - hostname: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config hostname}
+          service: ${pkgs._1password.op read k8s-lab live-nixos-tunnel config service}
     '';
   };
 }
