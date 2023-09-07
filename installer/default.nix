@@ -24,7 +24,7 @@
               ({ config, pkgs, ... }: {
                 # Call the script before the config for tunnels are created
                 system.activationScripts.checkCreateTunnel = { text = ''
-                  ${pkgs.bash}/bin/bash ${./installer/tunnels/check-create_tunnel-op.sh}
+                  ${pkgs.bash}/bin/bash ${./installer/tunnels/precreate-check_tunnel-op.sh}
                 ''; };
                 imports = [
                   # Add other imports as needed
