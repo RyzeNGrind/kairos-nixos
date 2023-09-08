@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
+
 {
   imports = [
     ./devices/default.nix

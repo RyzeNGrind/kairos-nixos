@@ -16,7 +16,7 @@
         ./hardware-configuration.nix
         ./configuration.nix
         {
-          nixpkgs.overlays = [
+          nixpkgs.overlays.default = [
             (self: super: {
               inherit (std) router;
             })

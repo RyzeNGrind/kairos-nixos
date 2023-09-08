@@ -22,6 +22,14 @@
             modules = [
               # Add other modules as needed
               ({ config, pkgs, ... }: {
+                # Add the overlay patch to fix https://github.com/NixOS/nix/issues/3271#issuecomment-922263815
+                nixpkgs.overlays.default = [
+                  (self: super: {
+                    nixUnstable = super.nixUnstable.override {
+                      patches = [ ./unset-is-mach0.patch ];
+                    };
+                  })
+                ];
                 # Call the script before the config for tunnels are created
                 system.activationScripts.checkCreateTunnel = { text = ''
                   ${pkgs.bash}/bin/bash ${./installer/tunnels/precreate-check_tunnel-op.sh}
