@@ -16,13 +16,13 @@
       pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
     in
     {
-      overlay = final: prev: {
+      overlays = final: prev: {
         hello = with final; stdenv.mkDerivation {
           name = "hello";
         };
       };
 
-      defaultPackage.${system} = self.packages.${system}.hello;
+      packages.${system}.default = self.packages.${system}.hello;
 
       devShell.${system} = devshell.shell {
         packages = with pkgs; [ hello ];

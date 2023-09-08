@@ -14,7 +14,7 @@
       pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
     in
     {
-      overlay = final: prev: {
+      overlays = final: prev: {
         hello = with final; stdenv.mkDerivation {
           name = "hello";
           src = hello.src;
@@ -28,13 +28,17 @@
         # Add other cloud app integrations here
       };
 
-      nixosModule = { pkgs, ... }: {
+      nixosModules.default = { pkgs, ... }: {
         imports = [ devos.nixosModules.system ];
         networking.hostName = "my-nixos";
         environment.systemPackages = with pkgs; [ hello ];
       };
 
-      defaultPackage.${system} = self.packages.${system}.hello;
+      packages = {
+        ${system} = {
+          default = self.overlays.default.hello;
+        };
+      };
 
       devShell.${system} = devshell.shell {
         packages = with pkgs; [ hello ];
