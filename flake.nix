@@ -14,13 +14,15 @@
       pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
     in
     {
-      overlays = final: prev: {
-        hello = with final; stdenv.mkDerivation {
-          name = "hello";
-          src = hello.src;
-          buildInputs = [ gcc ];
-        };
-      };
+      overlays = {
+  hello = final: prev: {
+    hello = with final; stdenv.mkDerivation {
+      name = "hello";
+      src = hello.src;
+      buildInputs = [ gcc ];
+    };
+  };
+};
 
       nixosModules = {
         cloud-infra = import ./cloud-infra/default.nix;
@@ -36,7 +38,7 @@
 
       packages = {
         ${system} = {
-          default = self.overlays.default.hello;
+          default = self.overlays.hello;
         };
       };
 
