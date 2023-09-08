@@ -11,13 +11,20 @@
   outputs = { self, nixpkgs, flake-utils, devos, devshell, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; overlays = [ self.overlays ]; };
+      lib = nixpkgs.lib;
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = builtins.attrValues self.overlays;
+      };
     in
     {
       overlays.default = final: prev: {
         hello = with final; stdenv.mkDerivation {
           name = "hello";
-          src = hello.src;
+          src = fetchurl {
+            url = "mirror://gnu/hello/hello-2.10.tar.gz";
+            sha256 = "0ssi1wpaf7plaswqqjwigppsg5fyh99vdlb9kzl7c9lng89ndq1i";
+          };
           buildInputs = [ gcc ];
         };
       };
