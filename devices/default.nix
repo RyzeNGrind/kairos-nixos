@@ -13,7 +13,7 @@
   outputs = { self, nixpkgs, flake-utils, devos, devshell, std, liminix, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
+      pkgs = import nixpkgs { inherit system; overlays = [ self.overlays ]; };
     in
     {
       overlays = final: prev: {

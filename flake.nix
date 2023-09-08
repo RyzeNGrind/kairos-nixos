@@ -11,18 +11,16 @@
   outputs = { self, nixpkgs, flake-utils, devos, devshell, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
+      pkgs = import nixpkgs { inherit system; overlays = [ self.overlays ]; };
     in
     {
-      overlays = {
-  hello = final: prev: {
-    hello = with final; stdenv.mkDerivation {
-      name = "hello";
-      src = hello.src;
-      buildInputs = [ gcc ];
-    };
-  };
-};
+      overlays.default = final: prev: {
+        hello = with final; stdenv.mkDerivation {
+          name = "hello";
+          src = hello.src;
+          buildInputs = [ gcc ];
+        };
+      };
 
       nixosModules = {
         cloud-infra = import ./cloud-infra/default.nix;
@@ -38,7 +36,7 @@
 
       packages = {
         ${system} = {
-          default = self.overlays.hello;
+          default = pkgs.hello;
         };
       };
 
