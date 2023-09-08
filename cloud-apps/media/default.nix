@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ./cloud-apps/default.nix
@@ -7,13 +7,13 @@
   ];
   # Toggle for enabling/disabling media cloud apps
   options = {
-    services.cloudApps.media.enable = mkOption {
-      type = types.bool;
+    services.cloudApps.media.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable cloud apps in media";
     };
   };
   
-  config = mkIf config.services.cloudApps.media.enable {
+  config = lib.mkIf config.services.cloudApps.media.enable {
     # Your configurations
   };

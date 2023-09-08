@@ -21,7 +21,7 @@
             system = system;
             modules = [
               # Add other modules as needed
-              ({ config, pkgs, ... }: {
+              ({ config, pkgs, lib, ... }: {
                 # Add the overlay patch to fix https://github.com/NixOS/nix/issues/3271#issuecomment-922263815
                 nixpkgs.overlays.default = [
                   (self: super: {

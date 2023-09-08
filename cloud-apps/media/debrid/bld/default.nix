@@ -1,5 +1,5 @@
 # default.nix flake for debrid
-{ config, pkgs, stdenv, fetchFromGitHub, ... }:
+{ config, pkgs, lib, stdenv, fetchFromGitHub, ... }:
 
 {
   imports = [
@@ -8,14 +8,14 @@
   ];
 
   options = {
-    services.cloudApps.media.debrid.enable = mkOption {
-      type = types.bool;
+    services.cloudApps.media.debrid.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable debrid cloud apps in media";
     };
   };
 
-  config = mkIf config.services.cloudApps.media.debrid.enable {
+  config = lib.mkIf config.services.cloudApps.media.debrid.enable {
     services.debrid = stdenv.mkDerivation rec {
       pname = "debrid";
       version = "0.1.0";

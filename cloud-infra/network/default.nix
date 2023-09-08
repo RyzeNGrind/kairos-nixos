@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ./cloud-infra/default.nix
@@ -6,13 +6,13 @@
   ];
   # Toggle for enabling/disabling cloud network
   options = {
-    services.cloudInfra.network.enable = mkOption {
-      type = types.bool;
+    services.cloudInfra.network.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable networking in cloud-infra";
     };
   };
   
-  config = mkIf config.services.cloudInfra.network.enable {
+  config = lib.mkIf config.services.cloudInfra.network.enable {
     # Your configurations
   };

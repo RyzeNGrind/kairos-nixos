@@ -9,14 +9,14 @@ with lib;
   ];
     # Toggle for enabling/disabling cloud infra
   options = {
-    services.cloudInfra.enable = mkOption {
-      type = types.bool;
+    services.cloudInfra.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable cloud-infra";
     };
   };
   
-  config = mkIf config.services.cloudInfra.enable {
+  config = lib.mkIf config.services.cloudInfra.enable {
     # Your configurations
   };
 }

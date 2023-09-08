@@ -8,8 +8,8 @@
   ];
     # Toggle for enabling/disabling cloud storage
   options = {
-    services.cloudInfra.storage.enable = mkOption {
-      type = types.bool;
+    services.cloudInfra.storage.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable storage in cloud-infra";
     };
@@ -76,7 +76,7 @@
               };
             };
           };
-          config = mkIf config.services.cloudInfra.storage.enable {
+          config = lib.mkIf config.services.cloudInfra.storage.enable {
             # Initialize cloud storage with user-specified mount point
             services.initCloudStorage = {
               enable = true;

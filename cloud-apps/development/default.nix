@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ./cloud-apps/default.nix
@@ -6,13 +6,13 @@
   ];
   # Toggle for enabling/disabling cloud apps
   options = {
-    services.cloudApps.development.enable = mkOption {
-      type = types.bool;
+    services.cloudApps.development.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable development cloud apps in media";
     };
   };
   
-  config = mkIf config.services.cloudApps.development.enable {
+  config = lib.mkIf config.services.cloudApps.development.enable {
     # Your configurations
   };

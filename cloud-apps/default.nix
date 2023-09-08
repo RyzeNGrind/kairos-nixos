@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ./cloud-infra/default.nix
@@ -6,14 +6,14 @@
   ];
     # Toggle for enabling/disabling cloud apps
   options = {
-    services.cloudApps.enable = mkOption {
-      type = types.bool;
+    services.cloudApps.enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable or disable cloud-apps";
     };
   };
   
-  config = mkIf config.services.cloudApps.enable {
+  config = lib.mkIf config.services.cloudApps.enable {
     # Your configurations
   };
 }
