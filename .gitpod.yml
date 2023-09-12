@@ -14,3 +14,4 @@ ports:
 vscode:
   extensions:
     - bbenoist.Nix
+    - shd101wyy.markdown-preview-enhanced
